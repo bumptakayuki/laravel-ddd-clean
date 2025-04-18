@@ -1,0 +1,43 @@
+services:
+  l11sample-nginx:
+    container_name: "l11sample-nginx"
+    build:
+      context: ./docker/nginx
+    depends_on:
+      - l11sample-app
+    ports:
+      - 80:80
+    volumes:
+      - ./:/src
+
+  l11sample-app:
+    container_name: "l11sample-app"
+    build:
+      context: ./docker/php
+    depends_on:
+      - l11sample-mysql
+    ports:
+      - 5173:5173
+    volumes:
+      - ./:/src
+      - /src/node_modules
+      - /src/vendor
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+
+  l11sample-mysql:
+    image: mysql:8.0.37
+    command: --max_allowed_packet=32505856
+    container_name: "l11sample-mysql"
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=l11sample
+    ports:
+      - 3306:3306
+
+  l11sample-redis:
+    image: redis:alpine
+    container_name: "l11sample-redis"
+    ports:
+      - 16379:6379
