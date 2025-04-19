@@ -8,7 +8,7 @@ use Packages\Order\Order\Domain\ValueObject\OrderStatus;
 use Packages\Order\Order\Domain\ValueObject\OrderItem;
 use Packages\Order\Order\Infrastructure\Eloquent\Model\OrderModel;
 
-class IOrderRepository implements IOrderRepository
+class OrderRepository implements IOrderRepository
 {
     public function save(Order $order): void
     {
