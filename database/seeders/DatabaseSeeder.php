@@ -19,5 +19,27 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // ドメインモデル用のSeederを実行
+        $this->call([
+            MembersSeeder::class,
+            BoxLunchesSeeder::class,
+            StoresSeeder::class,
+            AreasSeeder::class,
+            BoxLunchOptionsSeeder::class,
+            BoxLunchConfigurationsSeeder::class,
+            OptionSelectionsSeeder::class,
+            StoreBoxLunchesSeeder::class,
+            StoreAreasSeeder::class,
+            OrdersSeeder::class,
+            OrderItemsSeeder::class,
+            PaymentsSeeder::class,
+            AcceptancesSeeder::class,
+            PurchasesSeeder::class,
+            FavoritesSeeder::class,
+            FavoriteEntriesSeeder::class,
+            OrderHistoriesSeeder::class,
+            OrderHistoryEntriesSeeder::class,
+        ]);
     }
 }
