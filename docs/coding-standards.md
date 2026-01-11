@@ -75,7 +75,7 @@ laravel-ddd-clean/
 │           ├── Adapter/   # アダプタ層
 │           ├── Domain/    # ドメイン層
 │           ├── Infrastructure/  # インフラストラクチャ層
-│           └── Usecase/   # ユースケース層
+│           └── UseCase/   # ユースケース層
 ├── docs/                  # ドキュメント
 └── ...
 ```
@@ -90,32 +90,39 @@ packages/{ContextName}/{Aggregate}/
 │
 ├── Domain/
 │   ├── {Aggregate}.php                    # エンティティ
+│   ├── {Aggregate}Item.php                # エンティティ（関連エンティティ）
 │   ├── Repository/
 │   │   └── {Aggregate}RepositoryInterface.php
 │   └── ValueObject/
+│       ├── {Aggregate}Id.php
 │       ├── {Aggregate}Name.php
 │       ├── {Aggregate}Email.php
 │       └── ...
 │
 ├── Infrastructure/
 │   └── Eloquent/
-│       ├── Eloquent{Aggregate}.php       # Eloquentモデル
-│       └── {Aggregate}Repository.php     # リポジトリ実装
+│       ├── Model/
+│       │   ├── Eloquent{Aggregate}.php       # Eloquentモデル
+│       │   └── Eloquent{Aggregate}Item.php  # Eloquentモデル（関連モデル）
+│       └── Repository/
+│           └── {Aggregate}Repository.php     # リポジトリ実装
 │
-└── Usecase/
-    ├── Create/
+└── UseCase/
+    ├── Create{Aggregate}/
     │   ├── ICreate{Aggregate}UseCase.php
     │   ├── Create{Aggregate}Interactor.php
-    │   └── Create{Aggregate}InputData.php
-    ├── Update/
+    │   ├── Create{Aggregate}InputData.php
+    │   └── Create{Aggregate}OutputData.php
+    ├── Update{Aggregate}/
     │   ├── IUpdate{Aggregate}UseCase.php
     │   ├── Update{Aggregate}Interactor.php
     │   └── Update{Aggregate}InputData.php
-    ├── List/
+    ├── List{Aggregate}s/
     │   ├── IList{Aggregate}sUseCase.php
     │   ├── List{Aggregate}sInteractor.php
+    │   ├── List{Aggregate}sInputData.php
     │   └── List{Aggregate}sOutputData.php
-    └── Delete/
+    └── Delete{Aggregate}/
         ├── IDelete{Aggregate}UseCase.php
         ├── Delete{Aggregate}Interactor.php
         └── Delete{Aggregate}InputData.php
@@ -125,7 +132,7 @@ packages/{ContextName}/{Aggregate}/
 
 - **コンテキスト名**: PascalCase（例: `SampleUserContext`）
 - **集約ルート名**: PascalCase（例: `User`, `Order`）
-- **レイヤー名**: PascalCase（例: `Adapter`, `Domain`, `Infrastructure`, `Usecase`）
+- **レイヤー名**: PascalCase（例: `Adapter`, `Domain`, `Infrastructure`, `UseCase`）
 - **ディレクトリ名**: PascalCase（例: `Controller`, `ValueObject`, `Repository`）
 
 ---
@@ -149,8 +156,8 @@ namespace Packages\{ContextName}\{Aggregate}\Adapter\Controller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Packages\{ContextName}\{Aggregate}\Usecase\{UseCaseName}\I{UseCaseName}UseCase;
-use Packages\{ContextName}\{Aggregate}\Usecase\{UseCaseName}\{UseCaseName}InputData;
+use Packages\{ContextName}\{Aggregate}\UseCase\{Action}{Aggregate}\I{Action}{Aggregate}UseCase;
+use Packages\{ContextName}\{Aggregate}\UseCase\{Action}{Aggregate}\{Action}{Aggregate}InputData;
 
 class {Aggregate}Controller extends Controller
 {
@@ -182,15 +189,18 @@ class {Aggregate}Controller extends Controller
 
 #### ディレクトリ構成
 
-各ユースケースは独立したディレクトリに配置：
+各ユースケースは独立したディレクトリに配置。**ディレクトリ名は名前空間と一致させる必要がある**（PSR-4準拠）：
 
 ```
-Usecase/
-└── {Action}/                    # Create, Update, List, Delete など
+UseCase/
+└── {Action}{Aggregate}/                    # CreateOrder, UpdateUser, ListOrders など
     ├── I{Action}{Aggregate}UseCase.php      # インターフェース
     ├── {Action}{Aggregate}Interactor.php    # 実装
-    └── {Action}{Aggregate}InputData.php     # 入力データ（またはOutputData）
+    ├── {Action}{Aggregate}InputData.php     # 入力データ
+    └── {Action}{Aggregate}OutputData.php    # 出力データ（必要な場合）
 ```
+
+**重要**: ディレクトリ名は `{Action}{Aggregate}` の形式にする（例: `CreateOrder`, `ListOrders`）。単に `Create` や `List` ではなく、集約名を含めることで名前空間と一致させる。
 
 #### コーディング規約
 
@@ -198,7 +208,7 @@ Usecase/
 
 ```php
 <?php
-namespace Packages\{ContextName}\{Aggregate}\Usecase\{Action}{Aggregate};
+namespace Packages\{ContextName}\{Aggregate}\UseCase\{Action}{Aggregate};
 
 interface I{Action}{Aggregate}UseCase
 {
@@ -215,9 +225,9 @@ interface I{Action}{Aggregate}UseCase
 
 ```php
 <?php
-namespace Packages\{ContextName}\{Aggregate}\Usecase\{Action}{Aggregate};
+namespace Packages\{ContextName}\{Aggregate}\UseCase\{Action}{Aggregate};
 
-use Packages\{ContextName}\{Aggregate}\Domain\Entity\{Aggregate};
+use Packages\{ContextName}\{Aggregate}\Domain\{Aggregate};
 use Packages\{ContextName}\{Aggregate}\Domain\Repository\{Aggregate}RepositoryInterface;
 
 class {Action}{Aggregate}Interactor implements I{Action}{Aggregate}UseCase
@@ -247,7 +257,7 @@ class {Action}{Aggregate}Interactor implements I{Action}{Aggregate}UseCase
 
 ```php
 <?php
-namespace Packages\{ContextName}\{Aggregate}\Usecase\{Action}{Aggregate};
+namespace Packages\{ContextName}\{Aggregate}\UseCase\{Action}{Aggregate};
 
 class {Action}{Aggregate}InputData
 {
@@ -278,7 +288,7 @@ class {Action}{Aggregate}InputData
 
 ```php
 <?php
-namespace Packages\{ContextName}\{Aggregate}\Domain\Entity;
+namespace Packages\{ContextName}\{Aggregate}\Domain;
 
 class {Aggregate}
 {
@@ -294,7 +304,7 @@ class {Aggregate}
 - プロパティは `public readonly` で定義
 - 不変（immutable）を原則とする
 - ビジネスルールを含むメソッドを定義可能
-- 名前空間は `Domain\Entity`
+- 名前空間は `Domain`（エンティティは`Domain`直下に配置）
 
 **値オブジェクト（Value Object）**
 
@@ -343,7 +353,7 @@ class {Aggregate}Name
 <?php
 namespace Packages\{ContextName}\{Aggregate}\Domain\Repository;
 
-use Packages\{ContextName}\{Aggregate}\Domain\Entity\{Aggregate};
+use Packages\{ContextName}\{Aggregate}\Domain\{Aggregate};
 
 interface {Aggregate}RepositoryInterface
 {
@@ -407,7 +417,7 @@ class Eloquent{Aggregate} extends Model
 <?php
 namespace Packages\{ContextName}\{Aggregate}\Infrastructure\Eloquent\Repository;
 
-use Packages\{ContextName}\{Aggregate}\Domain\Entity\{Aggregate};
+use Packages\{ContextName}\{Aggregate}\Domain\{Aggregate};
 use Packages\{ContextName}\{Aggregate}\Domain\Repository\{Aggregate}RepositoryInterface;
 use Packages\{ContextName}\{Aggregate}\Infrastructure\Eloquent\Model\Eloquent{Aggregate};
 
@@ -558,12 +568,26 @@ public function register(): void
 
 ### 名前空間
 
-名前空間はディレクトリ構造と一致させる：
+名前空間はディレクトリ構造と一致させる（PSR-4準拠）：
 
 ```
 packages/{ContextName}/{Aggregate}/Domain/Entity/User.php
 → namespace Packages\{ContextName}\{Aggregate}\Domain\Entity;
+
+packages/{ContextName}/{Aggregate}/Domain/Repository/UserRepositoryInterface.php
+→ namespace Packages\{ContextName}\{Aggregate}\Domain\Repository;
+
+packages/{ContextName}/{Aggregate}/Infrastructure/Eloquent/Model/EloquentUser.php
+→ namespace Packages\{ContextName}\{Aggregate}\Infrastructure\Eloquent\Model;
+
+packages/{ContextName}/{Aggregate}/Infrastructure/Eloquent/Repository/UserRepository.php
+→ namespace Packages\{ContextName}\{Aggregate}\Infrastructure\Eloquent\Repository;
+
+packages/{ContextName}/{Aggregate}/UseCase/CreateUser/CreateUserInteractor.php
+→ namespace Packages\{ContextName}\{Aggregate}\UseCase\CreateUser;
 ```
+
+**重要**: ディレクトリ名と名前空間は完全に一致させる必要がある。不一致があると、PSR-4のオートローダーがクラスを見つけられない。
 
 ### ファイル構造
 

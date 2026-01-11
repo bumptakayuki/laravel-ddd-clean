@@ -31,19 +31,22 @@ packages/{ContextName}/{Aggregate}/
 │       └── {Aggregate}Name.php
 ├── Infrastructure/
 │   └── Eloquent/
-│       ├── Eloquent{Aggregate}.php
-│       └── {Aggregate}Repository.php
-└── Usecase/
-    └── {Action}/                    # Create, Update, List, Delete
+│       ├── Model/
+│       │   └── Eloquent{Aggregate}.php
+│       └── Repository/
+│           └── {Aggregate}Repository.php
+└── UseCase/
+    └── {Action}{Aggregate}/                    # CreateOrder, UpdateUser, ListOrders など
         ├── I{Action}{Aggregate}UseCase.php
         ├── {Action}{Aggregate}Interactor.php
-        └── {Action}{Aggregate}InputData.php
+        ├── {Action}{Aggregate}InputData.php
+        └── {Action}{Aggregate}OutputData.php
 ```
 
 ### 命名規則
 - コンテキスト名: PascalCase（例: `SampleUserContext`）
 - 集約ルート名: PascalCase（例: `User`, `Order`）
-- レイヤー名: PascalCase（例: `Adapter`, `Domain`, `Infrastructure`, `Usecase`）
+- レイヤー名: PascalCase（例: `Adapter`, `Domain`, `Infrastructure`, `UseCase`）
 - ディレクトリ名: PascalCase（例: `Controller`, `ValueObject`, `Repository`）
 
 ## レイヤー別コーディング規約
@@ -61,7 +64,7 @@ packages/{ContextName}/{Aggregate}/
 namespace Packages\{ContextName}\{Aggregate}\Adapter\Controller;
 
 use App\Http\Controllers\Controller;
-use Packages\{ContextName}\{Aggregate}\Usecase\{Action}{Aggregate}\I{Action}{Aggregate}UseCase;
+use Packages\{ContextName}\{Aggregate}\UseCase\{Action}{Aggregate}\I{Action}{Aggregate}UseCase;
 
 class {Aggregate}Controller extends Controller
 {
@@ -95,7 +98,7 @@ class {Aggregate}Controller extends Controller
 - プロパティは `public readonly` で定義
 - 不変（immutable）を原則とする
 - ビジネスルールを含むメソッドを定義可能
-- 名前空間は `Domain\Entity`
+- 名前空間は `Domain`（エンティティは`Domain`直下に配置）
 
 **値オブジェクト（Value Object）**
 - プロパティは `private readonly` で定義
@@ -196,8 +199,20 @@ Adapter → UseCase → Domain ← Infrastructure
 ### 名前空間
 名前空間はディレクトリ構造と一致させる：
 ```
-packages/{ContextName}/{Aggregate}/Domain/Entity/User.php
-→ namespace Packages\{ContextName}\{Aggregate}\Domain\Entity;
+packages/{ContextName}/{Aggregate}/Domain/User.php
+→ namespace Packages\{ContextName}\{Aggregate}\Domain;
+
+packages/{ContextName}/{Aggregate}/Domain/Repository/UserRepositoryInterface.php
+→ namespace Packages\{ContextName}\{Aggregate}\Domain\Repository;
+
+packages/{ContextName}/{Aggregate}/Infrastructure/Eloquent/Model/EloquentUser.php
+→ namespace Packages\{ContextName}\{Aggregate}\Infrastructure\Eloquent\Model;
+
+packages/{ContextName}/{Aggregate}/Infrastructure/Eloquent/Repository/UserRepository.php
+→ namespace Packages\{ContextName}\{Aggregate}\Infrastructure\Eloquent\Repository;
+
+packages/{ContextName}/{Aggregate}/UseCase/CreateUser/CreateUserInteractor.php
+→ namespace Packages\{ContextName}\{Aggregate}\UseCase\CreateUser;
 ```
 
 ### ファイル構造
@@ -250,10 +265,11 @@ class ClassName
 
 2. **新しい集約を追加する場合**
    - `packages/{ContextName}/{Aggregate}/` 配下に作成
-   - 4つのレイヤー（Adapter, Domain, Infrastructure, Usecase）を必ず作成
+   - 4つのレイヤー（Adapter, Domain, Infrastructure, UseCase）を必ず作成
 
 3. **UseCaseを追加する場合**
-   - `Usecase/{Action}/` ディレクトリを作成
+   - `UseCase/{Action}{Aggregate}/` ディレクトリを作成（例: `CreateOrder`, `ListOrders`）
+   - **重要**: ディレクトリ名は名前空間と一致させる必要がある（PSR-4準拠）
    - インターフェース、実装、InputData（必要に応じてOutputData）を作成
 
 4. **依存関係を確認**
@@ -263,7 +279,8 @@ class ClassName
 
 5. **命名規則を遵守**
    - クラス名、メソッド名、変数名は上記の規則に従う
-   - 名前空間はディレクトリ構造と一致させる
+   - 名前空間はディレクトリ構造と一致させる（PSR-4準拠）
+   - **重要**: ディレクトリ名と名前空間は完全に一致させる必要がある。不一致があると、PSR-4のオートローダーがクラスを見つけられない
 
 6. **型宣言を追加**
    - すべてのメソッドに戻り値の型を明示
