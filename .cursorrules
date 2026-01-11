@@ -1,0 +1,280 @@
+# Laravel DDD クリーンアーキテクチャ コーディング規約
+
+このプロジェクトは、ドメイン駆動設計（DDD）とクリーンアーキテクチャの設計思想に基づいて、コンテキスト単位で開発を行います。
+
+## 設計原則
+
+### クリーンアーキテクチャ
+- 依存性逆転の原則（DIP）: 内側のレイヤー（Domain）は外側のレイヤー（Infrastructure）に依存しない
+- 単一責任の原則（SRP）: 各クラスは1つの責任のみを持つ
+- 依存関係の方向: `Controller → UseCase → Domain ← Infrastructure`
+
+### DDDの原則
+- エンティティ: 一意の識別子を持ち、ビジネスルールを含む
+- 値オブジェクト: 不変（immutable）、値による等価性判定
+- リポジトリ: インターフェースはDomain層、実装はInfrastructure層
+- ユースケース: アプリケーションのビジネスロジックを実装
+
+## ディレクトリ構成
+
+### プロジェクト構造
+```
+packages/{ContextName}/{Aggregate}/
+├── Adapter/
+│   └── Controller/
+│       └── {Aggregate}Controller.php
+├── Domain/
+│   ├── {Aggregate}.php                    # エンティティ
+│   ├── Repository/
+│   │   └── {Aggregate}RepositoryInterface.php
+│   └── ValueObject/
+│       └── {Aggregate}Name.php
+├── Infrastructure/
+│   └── Eloquent/
+│       ├── Eloquent{Aggregate}.php
+│       └── {Aggregate}Repository.php
+└── Usecase/
+    └── {Action}/                    # Create, Update, List, Delete
+        ├── I{Action}{Aggregate}UseCase.php
+        ├── {Action}{Aggregate}Interactor.php
+        └── {Action}{Aggregate}InputData.php
+```
+
+### 命名規則
+- コンテキスト名: PascalCase（例: `SampleUserContext`）
+- 集約ルート名: PascalCase（例: `User`, `Order`）
+- レイヤー名: PascalCase（例: `Adapter`, `Domain`, `Infrastructure`, `Usecase`）
+- ディレクトリ名: PascalCase（例: `Controller`, `ValueObject`, `Repository`）
+
+## レイヤー別コーディング規約
+
+### Adapter Layer（アダプタ層）
+
+**Controller**
+- `App\Http\Controllers\Controller` を継承
+- UseCaseのインターフェースをコンストラクタで注入（依存性注入）
+- リクエストのバリデーションはControllerで行う（またはFormRequestを使用）
+- レスポンスはJSON形式で返す
+
+```php
+<?php
+namespace Packages\{ContextName}\{Aggregate}\Adapter\Controller;
+
+use App\Http\Controllers\Controller;
+use Packages\{ContextName}\{Aggregate}\Usecase\{Action}{Aggregate}\I{Action}{Aggregate}UseCase;
+
+class {Aggregate}Controller extends Controller
+{
+    public function __construct(
+        private readonly I{Action}{Aggregate}UseCase $useCase
+    ) {}
+}
+```
+
+### UseCase Layer（ユースケース層）
+
+**UseCaseインターフェース**
+- インターフェース名は `I` で始める（例: `ICreateUserUseCase`）
+- `handle` メソッドを定義
+- 入力は `InputData` オブジェクト、出力は `OutputData` オブジェクト
+
+**UseCase実装（Interactor）**
+- インターフェースを実装
+- リポジトリのインターフェースをコンストラクタで注入
+- ドメインエンティティを操作
+- 実装クラス名は `{Action}{Aggregate}Interactor`
+
+**InputData / OutputData**
+- プロパティは `public readonly` で定義
+- コンストラクタで初期化
+- バリデーションロジックは含めない（ControllerまたはFormRequestで実施）
+
+### Domain Layer（ドメイン層）
+
+**エンティティ（Entity）**
+- プロパティは `public readonly` で定義
+- 不変（immutable）を原則とする
+- ビジネスルールを含むメソッドを定義可能
+- 名前空間は `Domain\Entity`
+
+**値オブジェクト（Value Object）**
+- プロパティは `private readonly` で定義
+- コンストラクタでバリデーションを実施
+- `getValue()` メソッドで値を取得
+- 不変（immutable）であることを保証
+- 名前空間は `Domain\ValueObject`
+
+**リポジトリインターフェース**
+- インターフェース名は `{Aggregate}RepositoryInterface`
+- ドメインエンティティを引数・戻り値に使用
+- 名前空間は `Domain\Repository`
+- 実装の詳細（Eloquent等）は含めない
+
+### Infrastructure Layer（インフラストラクチャ層）
+
+**Eloquentモデル**
+- クラス名は `Eloquent{Aggregate}`
+- LaravelのEloquentモデルを継承
+- 名前空間は `Infrastructure\Eloquent\Model`
+- テーブル名はスネークケースの複数形
+
+**リポジトリ実装**
+- ドメインのリポジトリインターフェースを実装
+- Eloquentモデルとドメインエンティティの変換を行う
+- 名前空間は `Infrastructure\Eloquent\Repository`
+- ドメインエンティティを返す際は `toEntity()` メソッドで変換
+
+## 命名規則
+
+### クラス名
+- エンティティ: PascalCase（例: `User`, `Order`）
+- 値オブジェクト: PascalCase（例: `UserName`, `UserEmail`）
+- リポジトリインターフェース: `{Aggregate}RepositoryInterface`
+- リポジトリ実装: `{Aggregate}Repository`
+- UseCaseインターフェース: `I{Action}{Aggregate}UseCase`
+- UseCase実装: `{Action}{Aggregate}Interactor`
+- InputData: `{Action}{Aggregate}InputData`
+- OutputData: `{Action}{Aggregate}OutputData`
+- Controller: `{Aggregate}Controller`
+- Eloquentモデル: `Eloquent{Aggregate}`
+
+### メソッド名
+- UseCase実行: `handle`
+- リポジトリ保存: `save`
+- リポジトリ取得: `findById`, `findAll`
+- リポジトリ削除: `delete`
+- 値オブジェクト取得: `getValue`
+
+### 変数名
+- camelCase を使用
+- 意味のある名前を付ける
+- 略語は避ける
+
+### 定数名
+- UPPER_SNAKE_CASE を使用
+
+## 依存関係のルール
+
+### 依存関係の方向
+```
+Adapter → UseCase → Domain ← Infrastructure
+```
+
+### 各レイヤーの依存関係
+
+1. **Adapter Layer**
+   - ✅ UseCase Layer に依存可能
+   - ❌ Domain Layer に直接依存しない
+   - ❌ Infrastructure Layer に依存しない
+
+2. **UseCase Layer**
+   - ✅ Domain Layer に依存可能
+   - ❌ Infrastructure Layer に直接依存しない（インターフェース経由のみ）
+   - ❌ Adapter Layer に依存しない
+
+3. **Domain Layer**
+   - ❌ 他のレイヤーに依存しない（最内層）
+   - ✅ 自分自身のレイヤー内のクラスに依存可能
+
+4. **Infrastructure Layer**
+   - ✅ Domain Layer のインターフェースを実装
+   - ✅ Eloquent等の外部ライブラリに依存可能
+   - ❌ UseCase Layer に依存しない
+
+### 依存性注入（DI）
+- コンストラクタインジェクションを使用
+- インターフェースに依存する（具象クラスに依存しない）
+- Laravelのサービスコンテナを活用
+
+## ファイル構成規約
+
+### ファイル名
+- クラス名とファイル名は一致させる
+- 1ファイル1クラス
+- ファイル名は PascalCase
+
+### 名前空間
+名前空間はディレクトリ構造と一致させる：
+```
+packages/{ContextName}/{Aggregate}/Domain/Entity/User.php
+→ namespace Packages\{ContextName}\{Aggregate}\Domain\Entity;
+```
+
+### ファイル構造
+```php
+<?php
+namespace Packages\{ContextName}\{Aggregate}\{Layer}\{SubDirectory};
+
+// use文（アルファベット順）
+use Package1\Class1;
+use Package2\Class2;
+
+// クラス定義
+class ClassName
+{
+    // 定数
+    // プロパティ
+    // コンストラクタ
+    // メソッド
+}
+```
+
+## コーディングスタイル
+
+### PHPコーディング規約
+- **PSR-12** に準拠
+- インデント: 4スペース
+- 行の最大長: 120文字
+- 末尾の空白を削除
+
+### 型宣言
+- 可能な限り型宣言を追加
+- 戻り値の型を明示
+- `readonly` プロパティを積極的に使用（PHP 8.1+）
+
+### コメント
+- PHPDocコメントを記述
+- 複雑なロジックには説明コメントを追加
+- 日本語コメントも可
+
+### エラーハンドリング
+- ドメイン例外を定義して使用
+- 値オブジェクトのバリデーションエラーは `InvalidArgumentException` をスロー
+- リポジトリのエラーは適切な例外をスロー
+
+## コード生成時の注意事項
+
+1. **新しいコンテキストを作成する場合**
+   - `packages/{ContextName}/` 配下に作成
+   - 上記のディレクトリ構成に従う
+
+2. **新しい集約を追加する場合**
+   - `packages/{ContextName}/{Aggregate}/` 配下に作成
+   - 4つのレイヤー（Adapter, Domain, Infrastructure, Usecase）を必ず作成
+
+3. **UseCaseを追加する場合**
+   - `Usecase/{Action}/` ディレクトリを作成
+   - インターフェース、実装、InputData（必要に応じてOutputData）を作成
+
+4. **依存関係を確認**
+   - 常に依存関係の方向を確認
+   - Domain層が他のレイヤーに依存していないか確認
+   - Infrastructure層がDomain層のインターフェースを実装しているか確認
+
+5. **命名規則を遵守**
+   - クラス名、メソッド名、変数名は上記の規則に従う
+   - 名前空間はディレクトリ構造と一致させる
+
+6. **型宣言を追加**
+   - すべてのメソッドに戻り値の型を明示
+   - 可能な限り引数にも型を追加
+   - `readonly` プロパティを積極的に使用
+
+7. **コメントを追加**
+   - 複雑なロジックには説明コメントを追加
+   - PHPDocコメントを記述
+
+## 参考ドキュメント
+
+詳細は `docs/coding-standards.md` を参照してください。
+
