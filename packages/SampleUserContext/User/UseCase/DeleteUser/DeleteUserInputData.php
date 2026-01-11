@@ -1,5 +1,5 @@
 <?php
-namespace Packages\User\User\UseCase\DeleteUser;
+namespace Packages\SampleUserContext\User\UseCase\DeleteUser;
 
 class DeleteUserInputData
 {

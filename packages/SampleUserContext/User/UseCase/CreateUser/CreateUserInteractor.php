@@ -1,8 +1,8 @@
 <?php
-namespace Packages\User\User\UseCase\CreateUser;
+namespace Packages\SampleUserContext\User\UseCase\CreateUser;
 
-use Packages\User\User\Domain\Entity\User;
-use Packages\User\User\Domain\Repository\UserRepositoryInterface;
+use Packages\SampleUserContext\User\Domain\User;
+use Packages\SampleUserContext\User\Domain\Repository\UserRepositoryInterface;
 
 class CreateUserInteractor implements ICreateUserUseCase
 {

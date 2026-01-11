@@ -1,5 +1,5 @@
 <?php
-namespace Packages\User\User\UseCase\ListUsers;
+namespace Packages\SampleUserContext\User\UseCase\ListUsers;
 
 interface IListUsersUseCase
 {

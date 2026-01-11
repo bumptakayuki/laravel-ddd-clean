@@ -1,5 +1,5 @@
 <?php
-namespace Packages\User\User\Infrastructure\Eloquent\Model;
+namespace Packages\SampleUserContext\User\Infrastructure\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Model;
 

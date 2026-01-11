@@ -1,6 +1,6 @@
 <?php
 
-namespace Packages\User\User\UseCase\UpdateUser;
+namespace Packages\SampleUserContext\User\UseCase\UpdateUser;
 
 interface IUpdateUserUseCase
 {

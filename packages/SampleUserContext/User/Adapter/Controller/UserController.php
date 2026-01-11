@@ -1,14 +1,14 @@
 <?php
-namespace Packages\UserContext\User\Adapter\Controller;
+namespace Packages\SampleUserContext\User\Adapter\Controller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Packages\User\User\UseCase\ListUsers\IListUsersUseCase;
-use Packages\User\User\UseCase\UpdateUser\IUpdateUserUseCase;
-use Packages\User\User\UseCase\UpdateUser\UpdateUserInputData;
-use Packages\User\User\UseCase\DeleteUser\IDeleteUserUseCase;
-use Packages\User\User\UseCase\DeleteUser\DeleteUserInputData;
+use Packages\SampleUserContext\User\UseCase\ListUsers\IListUsersUseCase;
+use Packages\SampleUserContext\User\UseCase\UpdateUser\IUpdateUserUseCase;
+use Packages\SampleUserContext\User\UseCase\UpdateUser\UpdateUserInputData;
+use Packages\SampleUserContext\User\UseCase\DeleteUser\IDeleteUserUseCase;
+use Packages\SampleUserContext\User\UseCase\DeleteUser\DeleteUserInputData;
 
 class UserController extends Controller
 {
@@ -40,16 +40,16 @@ class UserController extends Controller
             $request->input('email')
         );
 
-        $output = $this->updateUserUseCase->handle($input);
-        return response()->json(['message' => $output->message]);
+        $this->updateUserUseCase->handle($input);
+        return response()->json(['message' => 'User updated successfully']);
     }
 
     public function destroy(int $id)
     {
         $input = new DeleteUserInputData($id);
-        $output = $this->deleteUserUseCase->handle($input);
+        $this->deleteUserUseCase->handle($input);
 
-        return response()->json(['message' => $output->message]);
+        return response()->json(['message' => 'User deleted successfully']);
     }
 }
 

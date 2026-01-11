@@ -1,11 +1,12 @@
 <?php
-namespace Packages\User\User\UseCase\CreateUser;
 
-class CreateUserInputData
+namespace Packages\SampleUserContext\User\UseCase\UpdateUser;
+
+class UpdateUserInputData
 {
     public function __construct(
+        public readonly int $id,
         public readonly string $name,
         public readonly string $email,
-        public readonly string $password,
     ) {}
 }

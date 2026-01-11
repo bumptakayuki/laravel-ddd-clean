@@ -1,5 +1,5 @@
 <?php
-namespace Packages\User\User\Domain\ValueObject;
+namespace Packages\SampleUserContext\User\Domain\ValueObject;
 
 use InvalidArgumentException;
 

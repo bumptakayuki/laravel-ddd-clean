@@ -1,5 +1,5 @@
 <?php
-namespace Packages\User\User\Domain\Entity;
+namespace Packages\SampleUserContext\User\Domain;
 
 class User
 {

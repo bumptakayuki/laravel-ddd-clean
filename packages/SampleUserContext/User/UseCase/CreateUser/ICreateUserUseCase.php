@@ -1,5 +1,5 @@
 <?php
-namespace Packages\User\User\UseCase\CreateUser;
+namespace Packages\SampleUserContext\User\UseCase\CreateUser;
 
 interface ICreateUserUseCase
 {
