@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Order Context: UseCase Interface ⇔ Interactor 実装
         $this->app->bind(ICreateOrderUseCase::class, CreateOrderInteractor::class);
+        
         $this->app->bind(IListOrdersUseCase::class, ListOrdersInteractor::class);
         $this->app->bind(ICreatePaymentUseCase::class, CreatePaymentInteractor::class);
         $this->app->bind(ICreateAcceptanceUseCase::class, CreateAcceptanceInteractor::class);

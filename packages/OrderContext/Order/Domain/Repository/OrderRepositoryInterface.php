@@ -1,7 +1,7 @@
 <?php
 namespace Packages\OrderContext\Order\Domain\Repository;
 
-use Packages\OrderContext\Order\Domain\Entity\Order;
+use Packages\OrderContext\Order\Domain\Order;
 use Packages\OrderContext\Order\Domain\ValueObject\OrderId;
 
 interface OrderRepositoryInterface

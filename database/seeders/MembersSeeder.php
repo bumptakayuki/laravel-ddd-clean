@@ -15,6 +15,15 @@ class MembersSeeder extends Seeder
     {
         $members = [
             [
+                'member_id' => 'member-001',
+                'email' => 'test@example.com',
+                'name' => 'テストユーザー',
+                'status' => 'active',
+                'registered_at' => now()->subMonths(6),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'member_id' => 'member-' . Str::uuid(),
                 'email' => 'tanaka@example.com',
                 'name' => '田中太郎',
@@ -61,7 +70,13 @@ class MembersSeeder extends Seeder
             ],
         ];
 
-        DB::table('members')->insert($members);
+        // member-001が存在しない場合のみ挿入
+        foreach ($members as $member) {
+            DB::table('members')->updateOrInsert(
+                ['member_id' => $member['member_id']],
+                $member
+            );
+        }
     }
 }
 
