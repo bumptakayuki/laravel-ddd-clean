@@ -42,3 +42,4 @@ class EloquentStore extends Model
     }
 }
 
+

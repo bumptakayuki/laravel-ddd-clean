@@ -29,3 +29,4 @@ class UpdateStoreBoxLunchInteractor implements IUpdateStoreBoxLunchUseCase
     }
 }
 
+

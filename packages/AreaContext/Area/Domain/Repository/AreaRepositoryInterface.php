@@ -38,3 +38,4 @@ interface AreaRepositoryInterface
     public function delete(Area $area): void;
 }
 
+

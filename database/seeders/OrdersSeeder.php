@@ -67,3 +67,4 @@ class OrdersSeeder extends Seeder
     }
 }
 
+

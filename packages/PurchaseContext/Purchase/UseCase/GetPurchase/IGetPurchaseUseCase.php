@@ -6,3 +6,4 @@ interface IGetPurchaseUseCase
     public function handle(GetPurchaseInputData $input): GetPurchaseOutputData;
 }
 
+

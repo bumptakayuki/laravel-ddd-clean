@@ -24,3 +24,4 @@ class EloquentAcceptance extends Model
     ];
 }
 
+

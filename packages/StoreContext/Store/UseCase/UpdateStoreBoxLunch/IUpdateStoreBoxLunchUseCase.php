@@ -6,3 +6,4 @@ interface IUpdateStoreBoxLunchUseCase
     public function handle(UpdateStoreBoxLunchInputData $input): UpdateStoreBoxLunchOutputData;
 }
 
+

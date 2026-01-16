@@ -56,3 +56,4 @@ class AreasSeeder extends Seeder
     }
 }
 
+

@@ -6,3 +6,4 @@ interface IListAreasUseCase
     public function handle(ListAreasInputData $input): ListAreasOutputData;
 }
 
+

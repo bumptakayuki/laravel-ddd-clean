@@ -6,3 +6,4 @@ interface IListStoresUseCase
     public function handle(ListStoresInputData $input): ListStoresOutputData;
 }
 
+

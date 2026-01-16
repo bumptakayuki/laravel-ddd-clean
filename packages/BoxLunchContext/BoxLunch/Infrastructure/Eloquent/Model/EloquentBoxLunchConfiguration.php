@@ -34,3 +34,4 @@ class EloquentBoxLunchConfiguration extends Model
     }
 }
 
+

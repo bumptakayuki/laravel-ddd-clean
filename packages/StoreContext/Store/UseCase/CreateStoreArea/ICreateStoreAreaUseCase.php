@@ -6,3 +6,4 @@ interface ICreateStoreAreaUseCase
     public function handle(CreateStoreAreaInputData $input): CreateStoreAreaOutputData;
 }
 
+

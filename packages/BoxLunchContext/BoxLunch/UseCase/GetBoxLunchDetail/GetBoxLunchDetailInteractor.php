@@ -42,3 +42,4 @@ class GetBoxLunchDetailInteractor implements IGetBoxLunchDetailUseCase
     }
 }
 
+

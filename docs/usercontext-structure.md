@@ -171,3 +171,4 @@ Controller → UseCase → Domain ← Infrastructure
 - InfrastructureはDomainのインターフェースを実装
 - Domainは他のレイヤーに依存しない（依存性逆転の原則）
 
+

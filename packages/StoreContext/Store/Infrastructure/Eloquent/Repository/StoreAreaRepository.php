@@ -66,3 +66,4 @@ class StoreAreaRepository implements StoreAreaRepositoryInterface
     }
 }
 
+

@@ -34,3 +34,4 @@ class CreateStoreBoxLunchInteractor implements ICreateStoreBoxLunchUseCase
     }
 }
 
+

@@ -6,3 +6,4 @@ interface IListBoxLunchesUseCase
     public function handle(ListBoxLunchesInputData $input): ListBoxLunchesOutputData;
 }
 
+

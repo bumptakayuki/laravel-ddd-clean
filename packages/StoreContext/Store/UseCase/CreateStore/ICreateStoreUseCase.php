@@ -6,3 +6,4 @@ interface ICreateStoreUseCase
     public function handle(CreateStoreInputData $input): CreateStoreOutputData;
 }
 
+

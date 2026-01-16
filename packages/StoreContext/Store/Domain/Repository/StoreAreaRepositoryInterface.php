@@ -15,3 +15,4 @@ interface StoreAreaRepositoryInterface
     public function delete(StoreArea $storeArea): void;
 }
 
+

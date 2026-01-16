@@ -66,3 +66,4 @@ class StoreBoxLunchRepository implements StoreBoxLunchRepositoryInterface
     }
 }
 
+

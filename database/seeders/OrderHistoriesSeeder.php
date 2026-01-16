@@ -42,3 +42,4 @@ class OrderHistoriesSeeder extends Seeder
     }
 }
 
+

@@ -6,3 +6,4 @@ interface IListPurchasesUseCase
     public function handle(ListPurchasesInputData $input): ListPurchasesOutputData;
 }
 
+

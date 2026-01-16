@@ -6,3 +6,4 @@ import AreaApp from './components/AreaApp.vue';
 const app = createApp(AreaApp);
 app.mount('#area-app');
 
+

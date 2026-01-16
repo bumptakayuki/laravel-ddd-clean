@@ -6,3 +6,4 @@ interface IGetStoreDetailUseCase
     public function handle(GetStoreDetailInputData $input): GetStoreDetailOutputData;
 }
 
+

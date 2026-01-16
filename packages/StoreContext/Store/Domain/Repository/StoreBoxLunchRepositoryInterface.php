@@ -15,3 +15,4 @@ interface StoreBoxLunchRepositoryInterface
     public function delete(StoreBoxLunch $storeBoxLunch): void;
 }
 
+

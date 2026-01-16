@@ -6,3 +6,4 @@ interface IGetBoxLunchDetailUseCase
     public function handle(GetBoxLunchDetailInputData $input): GetBoxLunchDetailOutputData;
 }
 
+

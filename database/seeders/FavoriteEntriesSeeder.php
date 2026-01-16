@@ -60,3 +60,4 @@ class FavoriteEntriesSeeder extends Seeder
     }
 }
 
+

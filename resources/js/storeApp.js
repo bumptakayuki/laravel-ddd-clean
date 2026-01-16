@@ -6,3 +6,4 @@ import StoreApp from './components/StoreApp.vue';
 const app = createApp(StoreApp);
 app.mount('#store-app');
 
+

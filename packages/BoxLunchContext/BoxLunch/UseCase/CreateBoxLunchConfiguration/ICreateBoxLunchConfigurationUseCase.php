@@ -6,3 +6,4 @@ interface ICreateBoxLunchConfigurationUseCase
     public function handle(CreateBoxLunchConfigurationInputData $input): CreateBoxLunchConfigurationOutputData;
 }
 
+

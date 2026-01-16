@@ -36,3 +36,4 @@ class EloquentBoxLunch extends Model
     }
 }
 
+

@@ -6,3 +6,4 @@ interface IUpdateStoreAreaUseCase
     public function handle(UpdateStoreAreaInputData $input): UpdateStoreAreaOutputData;
 }
 
+

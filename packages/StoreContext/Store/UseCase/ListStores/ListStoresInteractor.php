@@ -27,3 +27,4 @@ class ListStoresInteractor implements IListStoresUseCase
     }
 }
 
+

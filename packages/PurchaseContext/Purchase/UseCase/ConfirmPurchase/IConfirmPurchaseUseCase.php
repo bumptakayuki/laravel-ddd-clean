@@ -6,3 +6,4 @@ interface IConfirmPurchaseUseCase
     public function handle(ConfirmPurchaseInputData $input): ConfirmPurchaseOutputData;
 }
 
+

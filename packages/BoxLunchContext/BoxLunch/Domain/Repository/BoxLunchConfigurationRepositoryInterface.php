@@ -23,3 +23,4 @@ interface BoxLunchConfigurationRepositoryInterface
     public function findById(ConfigurationId $configurationId): ?BoxLunchConfiguration;
 }
 
+

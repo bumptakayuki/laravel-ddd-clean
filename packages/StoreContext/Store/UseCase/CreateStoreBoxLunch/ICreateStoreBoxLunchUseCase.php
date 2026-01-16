@@ -6,3 +6,4 @@ interface ICreateStoreBoxLunchUseCase
     public function handle(CreateStoreBoxLunchInputData $input): CreateStoreBoxLunchOutputData;
 }
 
+

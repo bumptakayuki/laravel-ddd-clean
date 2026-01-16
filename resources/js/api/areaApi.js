@@ -34,3 +34,4 @@ export const getArea = async (areaId) => {
     return response.data;
 };
 
+

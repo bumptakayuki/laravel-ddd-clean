@@ -6,3 +6,4 @@ import PurchaseApp from './components/PurchaseApp.vue';
 const app = createApp(PurchaseApp);
 app.mount('#purchase-app');
 
+

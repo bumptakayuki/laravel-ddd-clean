@@ -41,3 +41,4 @@ class FavoritesSeeder extends Seeder
     }
 }
 
+
