@@ -49,3 +49,4 @@ class StoreAreasSeeder extends Seeder
 }
 
 
+

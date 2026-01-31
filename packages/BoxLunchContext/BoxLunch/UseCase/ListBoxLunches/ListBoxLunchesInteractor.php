@@ -29,3 +29,4 @@ class ListBoxLunchesInteractor implements IListBoxLunchesUseCase
 }
 
 
+

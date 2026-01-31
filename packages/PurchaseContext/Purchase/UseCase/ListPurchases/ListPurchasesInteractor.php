@@ -27,3 +27,4 @@ class ListPurchasesInteractor implements IListPurchasesUseCase
 }
 
 
+

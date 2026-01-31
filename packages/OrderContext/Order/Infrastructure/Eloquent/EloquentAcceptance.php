@@ -25,3 +25,4 @@ class EloquentAcceptance extends Model
 }
 
 
+

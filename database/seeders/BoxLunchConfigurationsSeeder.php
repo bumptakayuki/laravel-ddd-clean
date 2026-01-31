@@ -54,3 +54,4 @@ class BoxLunchConfigurationsSeeder extends Seeder
 }
 
 
+

@@ -29,3 +29,4 @@ class GetAreaInteractor implements IGetAreaUseCase
 }
 
 
+

@@ -25,3 +25,4 @@ class EloquentArea extends Model
 }
 
 
+

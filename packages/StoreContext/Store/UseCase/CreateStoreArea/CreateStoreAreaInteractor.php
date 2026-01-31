@@ -35,3 +35,4 @@ class CreateStoreAreaInteractor implements ICreateStoreAreaUseCase
 }
 
 
+

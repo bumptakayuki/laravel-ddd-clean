@@ -26,3 +26,4 @@ class ListAreasInteractor implements IListAreasUseCase
 }
 
 
+

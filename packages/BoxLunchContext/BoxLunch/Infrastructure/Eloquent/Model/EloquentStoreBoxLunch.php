@@ -23,3 +23,4 @@ class EloquentStoreBoxLunch extends Model
 }
 
 
+

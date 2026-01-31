@@ -56,3 +56,4 @@ class GetStoreDetailInteractor implements IGetStoreDetailUseCase
 }
 
 
+

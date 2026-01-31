@@ -30,3 +30,4 @@ class UpdateStoreAreaInteractor implements IUpdateStoreAreaUseCase
 }
 
 
+

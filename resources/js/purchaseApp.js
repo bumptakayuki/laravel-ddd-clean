@@ -7,3 +7,4 @@ const app = createApp(PurchaseApp);
 app.mount('#purchase-app');
 
 
+

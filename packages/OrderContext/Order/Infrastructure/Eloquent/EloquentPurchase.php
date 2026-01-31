@@ -25,3 +25,4 @@ class EloquentPurchase extends Model
 }
 
 
+

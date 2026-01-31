@@ -37,3 +37,4 @@ class StoreBoxLunchesSeeder extends Seeder
 }
 
 
+
